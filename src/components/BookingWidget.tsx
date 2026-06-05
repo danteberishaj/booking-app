@@ -2,7 +2,8 @@
 
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import { differenceInCalendarDays } from "date-fns";
+import { differenceInCalendarDays, format } from "date-fns";
+import type { DateRange } from "react-day-picker";
 import { Star } from "lucide-react";
 import { useAuth } from "@/lib/features/auth/useAuth";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
@@ -10,10 +11,11 @@ import {
   makeBooking,
   selectBookingCreating,
 } from "@/lib/features/bookings/bookingsSlice";
+import DateRangePicker from "@/components/ui/DateRangePicker";
+import GuestSelector from "@/components/ui/GuestSelector";
 import type { Listing } from "@/lib/types";
 
 const SERVICE_FEE_RATE = 0.12;
-const todayISO = () => new Date().toISOString().slice(0, 10);
 
 export default function BookingWidget({ listing }: { listing: Listing }) {
   const router = useRouter();
@@ -21,17 +23,16 @@ export default function BookingWidget({ listing }: { listing: Listing }) {
   const { isAuthed, user } = useAuth();
   const creating = useAppSelector(selectBookingCreating);
 
-  const [checkIn, setCheckIn] = useState("");
-  const [checkOut, setCheckOut] = useState("");
+  const [range, setRange] = useState<DateRange | undefined>();
   const [guests, setGuests] = useState(1);
   const [error, setError] = useState<string | null>(null);
   const [done, setDone] = useState(false);
 
   const nights = useMemo(() => {
-    if (!checkIn || !checkOut) return 0;
-    const n = differenceInCalendarDays(new Date(checkOut), new Date(checkIn));
+    if (!range?.from || !range?.to) return 0;
+    const n = differenceInCalendarDays(range.to, range.from);
     return n > 0 ? n : 0;
-  }, [checkIn, checkOut]);
+  }, [range]);
 
   const subtotal = nights * listing.pricePerNight;
   const serviceFee = Math.round(subtotal * SERVICE_FEE_RATE);
@@ -43,7 +44,7 @@ export default function BookingWidget({ listing }: { listing: Listing }) {
       router.push(`/login?redirect=/listings/${listing.id}`);
       return;
     }
-    if (nights <= 0) {
+    if (!range?.from || !range?.to || nights <= 0) {
       setError("Please choose valid check-in and check-out dates.");
       return;
     }
@@ -54,8 +55,8 @@ export default function BookingWidget({ listing }: { listing: Listing }) {
           listingTitle: listing.title,
           listingImage: listing.images[0] ?? "",
           userId: user.uid,
-          startDate: checkIn,
-          endDate: checkOut,
+          startDate: format(range.from, "yyyy-MM-dd"),
+          endDate: format(range.to, "yyyy-MM-dd"),
           guests,
           nights,
           totalPrice: total,
@@ -81,49 +82,9 @@ export default function BookingWidget({ listing }: { listing: Listing }) {
         </span>
       </div>
 
-      <div className="mt-4 overflow-hidden rounded-xl border border-neutral-300">
-        <div className="grid grid-cols-2">
-          <label className="border-r border-neutral-300 p-3">
-            <span className="block text-[10px] font-bold uppercase tracking-wide text-neutral-700">
-              Check-in
-            </span>
-            <input
-              type="date"
-              min={todayISO()}
-              value={checkIn}
-              onChange={(e) => setCheckIn(e.target.value)}
-              className="mt-1 w-full bg-transparent text-sm outline-none"
-            />
-          </label>
-          <label className="p-3">
-            <span className="block text-[10px] font-bold uppercase tracking-wide text-neutral-700">
-              Checkout
-            </span>
-            <input
-              type="date"
-              min={checkIn || todayISO()}
-              value={checkOut}
-              onChange={(e) => setCheckOut(e.target.value)}
-              className="mt-1 w-full bg-transparent text-sm outline-none"
-            />
-          </label>
-        </div>
-        <label className="block border-t border-neutral-300 p-3">
-          <span className="block text-[10px] font-bold uppercase tracking-wide text-neutral-700">
-            Guests
-          </span>
-          <select
-            value={guests}
-            onChange={(e) => setGuests(Number(e.target.value))}
-            className="mt-1 w-full bg-transparent text-sm outline-none"
-          >
-            {Array.from({ length: listing.guests }).map((_, i) => (
-              <option key={i + 1} value={i + 1}>
-                {i + 1} guest{i + 1 > 1 ? "s" : ""}
-              </option>
-            ))}
-          </select>
-        </label>
+      <div className="mt-4 space-y-3">
+        <DateRangePicker value={range} onChange={setRange} />
+        <GuestSelector value={guests} max={listing.guests} onChange={setGuests} />
       </div>
 
       {error && <p className="mt-3 text-sm text-rose-600">{error}</p>}

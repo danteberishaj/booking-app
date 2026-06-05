@@ -9,6 +9,37 @@ body {
   font-family: var(--font-inter), Arial, Helvetica, sans-serif;
 }
 
+/* Cute rose-themed calendar (react-day-picker) */
+.rdp-cute {
+  --rdp-accent-color: #f43f5e; /* rose-500 */
+  --rdp-accent-background-color: #fff1f2; /* rose-50 */
+  --rdp-today-color: #f43f5e;
+  --rdp-day_button-border-radius: 9999px;
+  --rdp-day_button-width: 2.4rem;
+  --rdp-day_button-height: 2.4rem;
+  --rdp-selected-border: none;
+  --rdp-range_middle-background-color: #fff1f2;
+  --rdp-range_middle-color: #be123c; /* rose-700 */
+  margin: 0;
+  font-size: 0.85rem;
+}
+.rdp-cute .rdp-caption_label,
+.rdp-cute .rdp-month_caption {
+  font-weight: 600;
+  color: #171717;
+}
+.rdp-cute .rdp-day_button {
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+.rdp-cute .rdp-day_button:hover {
+  background-color: #fff1f2;
+}
+.rdp-cute .rdp-range_start .rdp-day_button,
+.rdp-cute .rdp-range_end .rdp-day_button {
+  background-color: var(--rdp-accent-color);
+  color: #fff;
+}
+
 /* Hide number input spinners on the host form */
 input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button {
