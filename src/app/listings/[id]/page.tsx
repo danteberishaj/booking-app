@@ -28,7 +28,7 @@ export default async function ListingPage({ params }: Params) {
   ];
 
   return (
-    <div className="mx-auto w-full max-w-[1680px] px-4 py-6 sm:px-6 lg:px-10">
+    <div className="mx-auto w-full max-w-[1500px] px-4 py-6 sm:px-6 lg:px-10">
       {/* Title */}
       <h1 className="text-2xl font-semibold text-neutral-900 sm:text-3xl">
         {listing.title}
