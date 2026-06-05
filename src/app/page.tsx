@@ -14,7 +14,7 @@ export default function Home() {
           }}
         />
         <div className="absolute inset-0 -z-10 bg-black/40" />
-        <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 sm:py-28">
+        <div className="mx-auto max-w-[1680px] px-4 py-20 sm:px-6 sm:py-28 lg:px-10">
           <h1 className="max-w-2xl text-4xl font-bold leading-tight text-white drop-shadow sm:text-5xl">
             Find a place you&apos;ll never want to leave
           </h1>
@@ -26,7 +26,7 @@ export default function Home() {
 
       <CategoryBar />
 
-      <section className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6">
+      <section className="mx-auto w-full max-w-[1680px] px-4 py-8 sm:px-6 lg:px-10">
         <ListingsGrid />
       </section>
     </>

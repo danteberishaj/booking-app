@@ -10,7 +10,8 @@ import {
 } from "@/lib/features/listings/listingsSlice";
 import ListingCard from "./ListingCard";
 
-const GRID = "grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4";
+const GRID =
+  "grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6";
 
 export default function ListingsGrid() {
   const dispatch = useAppDispatch();
@@ -24,7 +25,7 @@ export default function ListingsGrid() {
   if (status === "loading" || status === "idle") {
     return (
       <div className={GRID}>
-        {Array.from({ length: 8 }).map((_, i) => (
+        {Array.from({ length: 12 }).map((_, i) => (
           <div key={i} className="animate-pulse">
             <div className="aspect-square w-full rounded-2xl bg-neutral-200" />
             <div className="mt-3 h-4 w-2/3 rounded bg-neutral-200" />

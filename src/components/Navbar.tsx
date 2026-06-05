@@ -29,7 +29,7 @@ export default function Navbar() {
 
   return (
     <header className="sticky top-0 z-40 border-b border-neutral-200 bg-white/95 backdrop-blur">
-      <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
+      <div className="mx-auto flex max-w-[1680px] items-center justify-between gap-6 px-4 py-2.5 sm:px-6 lg:px-10">
         {/* Logo */}
         <Link href="/" className="flex shrink-0 items-center gap-2 text-rose-500">
           <svg viewBox="0 0 32 32" className="h-8 w-8 fill-current" aria-hidden>
@@ -46,7 +46,7 @@ export default function Navbar() {
           }}
           className="flex flex-1 items-center justify-center"
         >
-          <div className="flex w-full max-w-md items-center rounded-full border border-neutral-200 py-1.5 pl-5 pr-1.5 shadow-sm transition hover:shadow-md">
+          <div className="flex w-full max-w-xl items-center rounded-full border border-neutral-200 py-1.5 pl-5 pr-1.5 shadow-sm transition hover:shadow-md">
             <input
               value={search}
               onChange={(e) => dispatch(setSearch(e.target.value))}

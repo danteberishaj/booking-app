@@ -7,7 +7,17 @@ export type Category =
   | "Lakefront"
   | "Design"
   | "Luxe"
-  | "Tropical";
+  | "Tropical"
+  | "Mountain"
+  | "Skiing"
+  | "Camping"
+  | "Castles"
+  | "Mansions"
+  | "Treehouses"
+  | "Boats"
+  | "Farms"
+  | "Vineyards"
+  | "Desert";
 
 export const CATEGORIES: Category[] = [
   "Trending",
@@ -19,6 +29,16 @@ export const CATEGORIES: Category[] = [
   "Design",
   "Tropical",
   "Luxe",
+  "Mountain",
+  "Skiing",
+  "Camping",
+  "Castles",
+  "Mansions",
+  "Treehouses",
+  "Boats",
+  "Farms",
+  "Vineyards",
+  "Desert",
 ];
 
 export interface Listing {

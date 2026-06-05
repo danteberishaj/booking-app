@@ -17,7 +17,7 @@ export default function CategoryBar() {
 
   return (
     <div className="relative border-b border-neutral-200 bg-white">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6">
+      <div className="mx-auto max-w-[1680px] px-4 sm:px-6 lg:px-10">
         {/* scroll buttons (desktop) */}
         <button
           onClick={() => scrollBy(-1)}
