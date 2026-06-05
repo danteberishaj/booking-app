@@ -4,7 +4,11 @@ import {
   createSlice,
   type PayloadAction,
 } from "@reduxjs/toolkit";
-import { fetchListings } from "@/lib/services/listings";
+import {
+  createListing,
+  fetchListings,
+  type NewListingInput,
+} from "@/lib/services/listings";
 import type { RootState } from "@/lib/store/store";
 import type { Category, Listing } from "@/lib/types";
 
@@ -27,6 +31,21 @@ const initialState: ListingsState = {
 export const loadListings = createAsyncThunk("listings/load", async () => {
   return fetchListings();
 });
+
+/** Publish a new listing to Firestore and return the created record. */
+export const publishListing = createAsyncThunk(
+  "listings/publish",
+  async (input: NewListingInput): Promise<Listing> => {
+    const id = await createListing(input);
+    return {
+      ...input,
+      id,
+      rating: 5,
+      reviewCount: 0,
+      createdAt: Date.now(),
+    };
+  }
+);
 
 const listingsSlice = createSlice({
   name: "listings",
@@ -55,6 +74,9 @@ const listingsSlice = createSlice({
       .addCase(loadListings.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.error.message ?? "Failed to load listings";
+      })
+      .addCase(publishListing.fulfilled, (state, action) => {
+        state.items.unshift(action.payload);
       });
   },
 });
