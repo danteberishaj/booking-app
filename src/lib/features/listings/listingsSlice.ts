@@ -1,4 +1,9 @@
-import { createAsyncThunk, createSlice, type PayloadAction } from "@reduxjs/toolkit";
+import {
+  createAsyncThunk,
+  createSelector,
+  createSlice,
+  type PayloadAction,
+} from "@reduxjs/toolkit";
 import { fetchListings } from "@/lib/services/listings";
 import type { RootState } from "@/lib/store/store";
 import type { Category, Listing } from "@/lib/types";
@@ -63,17 +68,19 @@ export const selectListingsStatus = (s: RootState) => s.listings.status;
 export const selectCategory = (s: RootState) => s.listings.category;
 export const selectSearch = (s: RootState) => s.listings.search;
 
-/** Listings filtered by the active category and search query. */
-export const selectFilteredListings = (s: RootState): Listing[] => {
-  const { items, category, search } = s.listings;
-  const q = search.trim().toLowerCase();
-  return items.filter((l) => {
-    const matchesCategory = category === "All" || l.category === category;
-    const matchesSearch =
-      !q ||
-      l.title.toLowerCase().includes(q) ||
-      l.location.toLowerCase().includes(q) ||
-      l.country.toLowerCase().includes(q);
-    return matchesCategory && matchesSearch;
-  });
-};
+/** Listings filtered by the active category and search query (memoized). */
+export const selectFilteredListings = createSelector(
+  [selectAllListings, selectCategory, selectSearch],
+  (items, category, search): Listing[] => {
+    const q = search.trim().toLowerCase();
+    return items.filter((l) => {
+      const matchesCategory = category === "All" || l.category === category;
+      const matchesSearch =
+        !q ||
+        l.title.toLowerCase().includes(q) ||
+        l.location.toLowerCase().includes(q) ||
+        l.country.toLowerCase().includes(q);
+      return matchesCategory && matchesSearch;
+    });
+  }
+);

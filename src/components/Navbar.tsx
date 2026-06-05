@@ -46,14 +46,24 @@ export default function Navbar() {
           }}
           className="flex flex-1 items-center justify-center"
         >
-          <div className="flex w-full max-w-md items-center gap-2 rounded-full border border-neutral-200 px-4 py-2 shadow-sm transition hover:shadow-md">
-            <Search className="h-4 w-4 text-rose-500" />
+          <div className="flex w-full max-w-md items-center rounded-full border border-neutral-200 py-1.5 pl-5 pr-1.5 shadow-sm transition hover:shadow-md">
             <input
               value={search}
               onChange={(e) => dispatch(setSearch(e.target.value))}
-              placeholder="Search destinations"
-              className="w-full bg-transparent text-sm outline-none placeholder:text-neutral-500"
+              placeholder="Where to?"
+              className="min-w-0 flex-1 bg-transparent text-sm font-medium outline-none placeholder:font-normal placeholder:text-neutral-600"
             />
+            <span className="mx-2 hidden h-6 w-px bg-neutral-200 sm:block" />
+            <span className="hidden pr-3 text-sm text-neutral-500 sm:block">
+              Anytime
+            </span>
+            <button
+              type="submit"
+              aria-label="Search"
+              className="ml-1 shrink-0 rounded-full bg-rose-500 p-2.5 text-white transition hover:bg-rose-600"
+            >
+              <Search className="h-4 w-4" />
+            </button>
           </div>
         </form>
 
