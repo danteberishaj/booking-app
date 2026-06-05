@@ -28,7 +28,7 @@ export default async function ListingPage({ params }: Params) {
   ];
 
   return (
-    <div className="mx-auto w-full max-w-[1280px] px-4 py-6 sm:px-6 lg:px-10">
+    <div className="mx-auto w-full max-w-[1680px] px-4 py-6 sm:px-6 lg:px-10">
       {/* Title */}
       <h1 className="text-2xl font-semibold text-neutral-900 sm:text-3xl">
         {listing.title}
@@ -77,7 +77,7 @@ export default async function ListingPage({ params }: Params) {
       </div>
 
       {/* Body: info + booking */}
-      <div className="mt-8 grid grid-cols-1 gap-12 lg:grid-cols-[1fr_360px]">
+      <div className="mt-8 grid grid-cols-1 gap-12 lg:grid-cols-[1fr_420px]">
         <div>
           <div className="flex items-center justify-between border-b border-neutral-200 pb-6">
             <div>
