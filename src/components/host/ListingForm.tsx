@@ -11,6 +11,23 @@ import { uploadListingImage } from "@/lib/services/storage";
 import { useAppDispatch } from "@/lib/store/hooks";
 import type { Category } from "@/lib/types";
 
+/** Prepend https:// when a protocol is missing so bare domains still work. */
+function normalizeUrl(raw: string): string {
+  const u = raw.trim();
+  if (!u) return "";
+  return /^https?:\/\//i.test(u) ? u : `https://${u}`;
+}
+
+/** True only for parseable http(s) URLs — next/image throws on anything else. */
+function isValidHttpUrl(s: string): boolean {
+  try {
+    const u = new URL(s);
+    return u.protocol === "http:" || u.protocol === "https:";
+  } catch {
+    return false;
+  }
+}
+
 const CATEGORIES = CATEGORY_OPTIONS.filter((c) => c.value !== "All");
 const AMENITY_OPTIONS = [
   "Wifi",
@@ -90,8 +107,13 @@ export default function ListingForm() {
   }
 
   function addUrl() {
-    const url = urlInput.trim();
+    const url = normalizeUrl(urlInput);
     if (!url) return;
+    if (!isValidHttpUrl(url)) {
+      setError("Please enter a valid image URL (e.g. https://…/photo.jpg).");
+      return;
+    }
+    setError(null);
     setImages((cur) => [...cur, url]);
     setUrlInput("");
   }
@@ -304,13 +326,19 @@ export default function ListingForm() {
                 key={`${src}-${i}`}
                 className="group relative aspect-square overflow-hidden rounded-xl bg-neutral-100"
               >
-                <Image
-                  src={src}
-                  alt={`Photo ${i + 1}`}
-                  fill
-                  sizes="200px"
-                  className="object-cover"
-                />
+                {isValidHttpUrl(src) ? (
+                  <Image
+                    src={src}
+                    alt={`Photo ${i + 1}`}
+                    fill
+                    sizes="200px"
+                    className="object-cover"
+                  />
+                ) : (
+                  <div className="flex h-full items-center justify-center px-2 text-center text-xs text-neutral-400">
+                    Invalid image URL
+                  </div>
+                )}
                 <button
                   type="button"
                   onClick={() => removeImage(i)}
