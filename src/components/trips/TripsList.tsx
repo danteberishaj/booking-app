@@ -79,12 +79,12 @@ export default function TripsList() {
   }
 
   return (
-    <ul className="space-y-4">
+    <ul className="grid grid-cols-1 gap-4 md:grid-cols-2">
       {bookings.map((b) => (
         <li key={b.id}>
           <Link
             href={`/listings/${b.listingId}`}
-            className="flex flex-col gap-4 rounded-2xl border border-neutral-200 p-3 transition hover:shadow-md sm:flex-row"
+            className="flex h-full flex-col gap-4 rounded-2xl border border-neutral-200 p-3 transition hover:shadow-md sm:flex-row"
           >
             <div className="relative h-40 w-full shrink-0 overflow-hidden rounded-xl bg-neutral-100 sm:h-32 sm:w-48">
               {b.listingImage && (
